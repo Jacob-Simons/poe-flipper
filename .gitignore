@@ -8,6 +8,7 @@ __pycache__/
 
 #Icons
 *.png
+icons/
 
 # Distribution / packaging
 .Python
