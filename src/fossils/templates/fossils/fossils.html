@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Fossil</th>
+        <th>Avg Price</th>
+        <th>Bulk Quant</th>
+        <th>Profit</th>
+        <th>Profit Per</th>
+        <th>Supply</th>
+    </tr>
+    {% for fossil in fossil_list %}
+        <tr>
+
+            <td><img src={%static 'images/'|add:fossil.id|add:'.png' %}> {{ fossil.name }}</td>
+            <td>{{ fossil.avgPrice }}</td>
+            <td>{{ fossil.bulkQuant }}</td>
+            <td>{{ fossil.profit }}</td>
+            <td>{{ fossil.profitPerFossil }}</td>
+            <td>{{ fossil.supply }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import sys
-import csv
 
 
 sys.path.append(r'C:\Users\Jacob\PycharmProjects\PoeBulkFlipper')

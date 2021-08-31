@@ -1,6 +1,6 @@
 import requests
 import time
-
+import decimal
 class fossil:
     def __init__(self, id, avgPrice, name, icon):
         self.id = id
@@ -65,4 +65,11 @@ def getBulkQuant(itemName):
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
     numFossil = r.json()['result'][0]['listing']['price']['item']['amount']
     bulkQuant = numFossil / exa
-    return bulkQuant
+    return normalize(bulkQuant)
+
+
+def normalize(num):
+    num = float(f'{round(num, 2):g}')
+    if num.is_integer():
+        int(num)
+    return num
