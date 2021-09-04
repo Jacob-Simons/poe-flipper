@@ -5,16 +5,6 @@ import csv
 import os
 import pprint
 
-FOSSIL_TEMPLATE = {
-    'name': '',
-    'id': '',
-    'avgPrice': '',
-    'bulkQuant': '',
-    'profit': '',
-    'profitPerFossil': '',
-    'supply': ''
-}
-
 # Create your views here.
 def fossils(request):
     fossil_list = []

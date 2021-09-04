@@ -4,10 +4,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>poeflip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/fossil-style.css' %}">
 </head>
 <body>
-<table>
+<nav>
+    <div class="logo"><h4>poeflip</h4></div>
+    <ul class="nav-links">
+        <li>
+            <a href="http://127.0.0.1:8000/">Home</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/fossils">Fossils</a>
+        </li>
+    </ul>
+</nav>
+
+<table class="fossil-table">
     <tr>
         <th>Fossil</th>
         <th>Avg Price</th>
@@ -18,13 +34,12 @@
     </tr>
     {% for fossil in fossil_list %}
         <tr>
-
-            <td><img src={%static 'images/'|add:fossil.id|add:'.png' %}> {{ fossil.name }}</td>
-            <td>{{ fossil.avgPrice }}</td>
-            <td>{{ fossil.bulkQuant }}</td>
-            <td>{{ fossil.profit }}</td>
-            <td>{{ fossil.profitPerFossil }}</td>
-            <td>{{ fossil.supply }}</td>
+            <td><img src="{{ fossil.icon_url }}"> {{ fossil.name }}</td>
+            <td>{{fossil.avgPrice }}</td>
+            <td>{{fossil.bulkQuant }}</td>
+            <td>{{fossil.profit }}</td>
+            <td>{{fossil.profitPerFossil }}</td>
+            <td>{{fossil.supply }}</td>
         </tr>
     {% endfor %}
 </table>

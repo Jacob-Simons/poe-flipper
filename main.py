@@ -37,7 +37,7 @@ def update_fossils():
 
         with NamedTemporaryFile(mode='w', delete=False, newline='') as temp_log:
             log_writer = csv.writer(temp_log, delimiter=',')
-            log_writer.writerow(['name', 'id', 'avgPrice', 'bulkQuant', 'profit', 'profitPerFossil', 'supply'])
+            log_writer.writerow(['name', 'id', 'avgPrice', 'bulkQuant', 'profit', 'profitPerFossil', 'supply', 'icon_url'])
 
             for fossil in fossilAvgPriceList:
                 fossil.bulkQuant = poeAPI.getBulkQuant(fossil.id)
@@ -48,7 +48,7 @@ def update_fossils():
                     fossil.profit = poeAPI.normalize(exa_price - (fossil.bulkQuant * fossil.avgPrice))
                     fossil.profitPerFossil = poeAPI.normalize(fossil.profit / fossil.bulkQuant)
 
-                log_writer.writerow([fossil.name, fossil.id, fossil.avgPrice, fossil.bulkQuant, fossil.profit, fossil.profitPerFossil, fossil.supply])
+                log_writer.writerow([fossil.name, fossil.id, fossil.avgPrice, fossil.bulkQuant, fossil.profit, fossil.profitPerFossil, fossil.supply, fossil.icon])
                 time.sleep(5)
 
         shutil.move(temp_log.name, FOSSIL_DATA_FILE_NAME)

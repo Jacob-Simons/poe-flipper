@@ -1,7 +1,8 @@
 import requests
 import time
-import decimal
-class fossil:
+
+
+class consumable:
     def __init__(self, id, avgPrice, name, icon):
         self.id = id
         self.avgPrice = avgPrice
@@ -13,15 +14,9 @@ class fossil:
         self.profitPerFossil = 0
 
 
-
 BASE_SEARCH = 'http://www.pathofexile.com/api/trade/exchange/'
 BASE_FETCH = 'https://www.pathofexile.com/api/trade/fetch/'
 QUERY = '?exchange=true&query='
-
-    # Reference list of all fossil ids
-    # ['scorched-fossil', 'frigid-fossil', 'metallic-fossil', 'jagged-fossil', 'aberrant-fossil', 'pristine-fossil', 'dense-fossil', 'corroded-fossil',
-    # 'prismatic-fossil', 'aetheric-fossil', 'serrated-fossil', 'lucent-fossil', 'shuddering-fossil', 'bound-fossil', 'perfect-fossil', 'enchanted-fossil', 'encrusted-fossil',
-    # 'faceted-fossil', 'bloodstained-fossil', 'hollow-fossil', 'fractured-fossil', 'glyphic-fossil', 'tangled-fossil', 'sanctified-fossil', 'gilded-fossil']
 
 HEADERS = {"User-Agent": "Bulk Flipper/1.0 (+poponoodles@gmail.com)"}
 
@@ -48,7 +43,7 @@ def getBulkQuant(itemName):
 
     HEADERS = {"User-Agent": "OAuth Bulk Flipper/1.0 (+poponoodles@gmail.com)"}
     invalid_response_code = True
-    while (invalid_response_code):
+    while invalid_response_code:
         r = requests.post(urlSearch1, json=payload, headers=HEADERS)
         if r.status_code != 406:
             invalid_response_code = False
@@ -63,8 +58,8 @@ def getBulkQuant(itemName):
     urlSearch2 = BASE_FETCH + resultLine + QUERY + urlID
     r = requests.get(urlSearch2, headers=HEADERS)
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
-    numFossil = r.json()['result'][0]['listing']['price']['item']['amount']
-    bulkQuant = numFossil / exa
+    quant = r.json()['result'][0]['listing']['price']['item']['amount']
+    bulkQuant = quant / exa
     return normalize(bulkQuant)
 
 
