@@ -3,21 +3,21 @@ import poeAPI
 import pprint
 import shutil
 import os.path
+from pathlib import Path
 
-def getOverview():
-    r = requests.get('https://poe.ninja/api/data/itemoverview?league=' + poeAPI.currLeague + '&type=Fossil')
-    fossilAvgPriceList = []
 
-    for fossil in r.json()['lines']:
-        price = fossil['chaosValue']
-        id = fossil['detailsId']
-        name = fossil['name']
-        icon = fossil['icon']
-        fossilAvgPriceList.append(poeAPI.fossil(id, price, name, icon))
-        icon_exists = os.path.isfile(id + '.png')
-        if not icon_exists:
-            download_icon(icon, id)
-    return fossilAvgPriceList
+def getOverview(target):
+    r = requests.get('https://poe.ninja/api/data/itemoverview?league=' + poeAPI.currLeague + '&type=' + target)
+    avg_price_list = []
+
+    for consumable in r.json()['lines']:
+        price = consumable['chaosValue']
+        id = consumable['detailsId']
+        name = consumable['name']
+        icon = consumable['icon']
+        avg_price_list.append(poeAPI.consumable(id, price, name, icon))
+
+    return avg_price_list
 
 def getExaPrice():
     r = requests.get('https://poe.ninja/api/data/currencyoverview?league=' + poeAPI.currLeague + '&type=Currency')
@@ -28,8 +28,4 @@ def getExaPrice():
             break
     return exaPrice
 
-def download_icon(url, id):
-    r = requests.get(url, stream=True)
-    with open(id + '.png', 'wb') as out_file:
-        shutil.copyfileobj(r.raw, out_file)
-    del r
+

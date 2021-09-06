@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>poeflip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/frontpage-style.css' %}">
 </head>
 <body>
-{{fossil.name}}
+
+<nav>
+    <div class="logo"><h4>poeflip</h4></div>
+    <ul class="nav-links">
+        <li>
+            <a href="http://127.0.0.1:8000/">Home</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/fossils">Fossils</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/deliriumorbs">Delirium Orbs</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/scarabs">Scarabs</a>
+        </li>
+    </ul>
+</nav>
+
+<p class="intro">
+    Poeflip is a market analysis tool for Path of Exile to find the most profitable items to flip at any time.
+    Currently only consumables are tracked for flipping as they are the easiest and most consitent way to make
+    currency flipping. (This product isn't affiliated with or endorsed by Grinding Gear Games in any way)
+</p>
+
+<h1>Recommended Flipping Tutorial:</h1>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/IwmksFI3wKc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<h1>Terminology:</h1>
+<h2>Average Price</h2><p class="text"> Average expected price to buy the item one at a time, pulled directly from poe.ninja. </p>
+
+<h2>Bulk Quant</h2><p class="text">Total amount of items required to bulk sell for 1ex</p>
+
+<h2>Profit</h2><p class="text">Total amount of profit made from sell a set for 1ex</p>
+
+<h2>Profit Per</h2><p class="text">Profit made per item sold in a bulk set</p>
+
+<h2>Supply</h2><p class="text">Total amount of items listed in the past 24hrs, pulled directly from poe.watch</p>
 </body>
 </html>

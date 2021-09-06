@@ -1,71 +1,69 @@
 import ninjaAPI
 import poeAPI
 import poeWatchAPI
-import gui
 import time
-import threading
+import csv
+from tempfile import NamedTemporaryFile
+import shutil
 
 
 #  div card overview
-# r = requests.get('https://poe.ninja/api/data/itemoverview?league=Heist&type=DivinationCard')
+# r = requests.get('https://poe.ninja/api/data/itemoverview?league=Heist&type=
 
-def selectionSort(list):
+CONSUMABLE_LIST = ['Fossil', 'DeliriumOrb', 'Scarab']
+POE_WATCH_LIST = ['fossil', 'deliriumOrb', 'scarab']
+
+def sort_by_profit_per(list):
     length = range(0, len(list) - 1)
 
     for i in length:
         min_value = i
 
-        for j in range(i + 1, len(list)):
-            if list[j].profitPerFossil > list[min_value].profitPerFossil:
-                min_value = j
+        for k in range(i + 1, len(list)):
+            if list[k].profitPer > list[min_value].profitPer:
+                min_value = k
 
         if min_value != i:
             list[min_value], list[i] = list[i], list[min_value]
     return list
 
 
-def update_fossils():
+def update_consumables():
     while True:
-        global fossilAvgPriceList
-        fossilAvgPriceList = ninjaAPI.getOverview()
+        for consumable,poe_watch_target in zip(CONSUMABLE_LIST, POE_WATCH_LIST):
+            avg_price_list = ninjaAPI.getOverview(consumable)
+            print(avg_price_list)
+            if consumable == "Scarab":
+                for scarab in avg_price_list:
+                    print(scarab)
+                    if scarab.id.find('lure') != -1:
+                        avg_price_list.remove(scarab)
 
-        exa_price = ninjaAPI.getExaPrice()
+            exa_price = ninjaAPI.getExaPrice()
 
-        poeWatchAPI.getSupply('fossil', fossilAvgPriceList)
+            poeWatchAPI.getSupply(poe_watch_target, avg_price_list)
 
-        for fossil in fossilAvgPriceList:
-            fossil.bulkQuant = poeAPI.getBulkQuant(fossil.id)
-            if fossil.bulkQuant == 0:
-                fossil.profit = 0
-                fossil.profitPerFossil = 0
-            else:
-                fossil.profit = exa_price - (fossil.bulkQuant * fossil.avgPrice)
-                fossil.profitPerFossil = fossil.profit / fossil.bulkQuant
-            time.sleep(5)
+            with NamedTemporaryFile(mode='w', delete=False, newline='') as temp_log:
+                log_writer = csv.writer(temp_log, delimiter=',')
+                log_writer.writerow(['name', 'id', 'avgPrice', 'bulkQuant', 'profit', 'profitPer', 'supply', 'icon_url'])
 
-        fossilAvgPriceList = selectionSort(fossilAvgPriceList)
-        global updated
-        updated = True
+                for item in avg_price_list:
+                    if consumable == 'Scarab' and item.id.find('blight') == -1 and item.id.find('abyss') == -1:
+                        item.id = item.id.replace('winged', 'jewelled')
+                    print(item.id)
+                    item.bulkQuant = poeAPI.getBulkQuant(item.id)
+                    if item.bulkQuant == 0:
+                        item.profit = 0
+                        item.profitPer = 0
+                    else:
+                        item.profit = poeAPI.normalize(exa_price - (item.bulkQuant * item.avgPrice))
+                        item.profitPer = poeAPI.normalize(item.profit / item.bulkQuant)
+                    time.sleep(5)
 
+                sort_by_profit_per(avg_price_list)
+                for item in avg_price_list:
+                    log_writer.writerow([item.name, item.id, item.avgPrice, item.bulkQuant, item.profit, item.profitPer, item.supply, item.icon])
 
-def update_gui_loop():
-    global updated
-    global fossilAvgPriceList
-    if updated:
-        gui.updateGUI(fossilAvgPriceList)
-        updated = False
+            shutil.move(temp_log.name, consumable + '.csv')
 
-    gui.root.after(20, update_gui_loop)
-
-
-fossilAvgPriceList = []
-updated = False
-
-t1 = threading.Thread(target=update_fossils)
-t1.start()
-gui.root.after(20, update_gui_loop)
-
-gui.root.mainloop()
-
-
-
+update_consumables()

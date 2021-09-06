@@ -10,6 +10,9 @@ __pycache__/
 *.png
 icons/
 
+#Data
+*.csv
+
 # Distribution / packaging
 .Python
 build/

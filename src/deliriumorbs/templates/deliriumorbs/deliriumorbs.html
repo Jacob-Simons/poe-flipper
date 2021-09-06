@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>poeflip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/consumable-style.css' %}">
+</head>
+<body>
+<nav>
+    <div class="logo"><h4>poeflip</h4></div>
+    <ul class="nav-links">
+        <li>
+            <a href="http://127.0.0.1:8000/">Home</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/fossils">Fossils</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/deliriumorbs">Delirium Orbs</a>
+        </li>
+        <li>
+            <a href="http://127.0.0.1:8000/scarabs">Scarabs</a>
+        </li>
+    </ul>
+</nav>
+
+<table class="consumable-table">
+    <tr>
+        <th>Delirium Orb</th>
+        <th>Avg Price</th>
+        <th>Bulk Quant</th>
+        <th>Profit</th>
+        <th>Profit Per</th>
+        <th>Supply</th>
+    </tr>
+    {% for deliriumorb in deliriumorb_list %}
+        <tr>
+            <td><img src="{{ deliriumorb.icon_url }}"> {{ deliriumorb.name }}</td>
+            <td>{{deliriumorb.avgPrice }}</td>
+            <td>{{deliriumorb.bulkQuant }}</td>
+            <td>{{deliriumorb.profit }}</td>
+            <td>{{deliriumorb.profitPer }}</td>
+            <td>{{deliriumorb.supply }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
