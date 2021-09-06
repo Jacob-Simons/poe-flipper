@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'fossils.apps.FossilsConfig',
+    'scarabs.apps.ScarabsConfig',
+    'deliriumorbs.apps.DeliriumorbsConfig',
     'frontpage.apps.FrontpageConfig',
     'django.contrib.admin',
     'django.contrib.auth',

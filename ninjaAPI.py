@@ -6,18 +6,18 @@ import os.path
 from pathlib import Path
 
 
-def getOverview():
-    r = requests.get('https://poe.ninja/api/data/itemoverview?league=' + poeAPI.currLeague + '&type=Fossil')
-    fossilAvgPriceList = []
+def getOverview(target):
+    r = requests.get('https://poe.ninja/api/data/itemoverview?league=' + poeAPI.currLeague + '&type=' + target)
+    avg_price_list = []
 
-    for fossil in r.json()['lines']:
-        price = fossil['chaosValue']
-        id = fossil['detailsId']
-        name = fossil['name']
-        icon = fossil['icon']
-        fossilAvgPriceList.append(poeAPI.consumable(id, price, name, icon))
+    for consumable in r.json()['lines']:
+        price = consumable['chaosValue']
+        id = consumable['detailsId']
+        name = consumable['name']
+        icon = consumable['icon']
+        avg_price_list.append(poeAPI.consumable(id, price, name, icon))
 
-    return fossilAvgPriceList
+    return avg_price_list
 
 def getExaPrice():
     r = requests.get('https://poe.ninja/api/data/currencyoverview?league=' + poeAPI.currLeague + '&type=Currency')

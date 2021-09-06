@@ -1,18 +1,18 @@
-.fossil-table {
+.consumable-table {
     border: none;
     border-collapse:collapse;
     background-color: #3E3B3A;
     margin: 25px 0;
     font-size: 1.4em;
-    margin-left: 20%;
-    margin-right: 20%;
-    width: 60%;
+    margin-left: 18%;
+    margin-right: 18%;
+    width: 64%;
     font: Arial;
     align: center;
     table-layout: fixed;
 }
 
-.fossil-table th{
+.consumable-table th{
     color: rgb(225, 225, 225);
     background-color: #9F3917;
     text-align: left;
@@ -23,15 +23,15 @@
     font-family: 'Prompt', sans-serif;
 }
 
-.fossil-table tr th:nth-child(1){
-       width: 25%;
+.consumable-table tr th:nth-child(1){
+       width: 30%;
      }
 
-.fossil-table tr:nth-child(odd){
+.consumable-table tr:nth-child(odd){
     background-color: #4F4B4A;
 }
 
-.fossil-table td {
+.consumable-table td {
     color: rgb(225, 225, 225);
     font-size: 20px;
     vertical-align: center;
@@ -40,7 +40,7 @@
     padding: 0.5rem;
 }
 
-.fossil-table td img {
+.consumable-table td img {
     vertical-align: top;
 }
 
@@ -69,7 +69,7 @@ nav {
     color: rgb(225, 225, 225);
     display: flex;
     justify-content: space-around;
-    width: 20%;
+    width: 40%;
     font-size: 16px;
 }
 
@@ -82,5 +82,10 @@ nav {
     letter-spacing: 2px;
     font-weight: bold;
     text-decoration: none;
+}
+
+img {
+    height: 40px;
+    width: 40px;
 }
 

@@ -6,11 +6,11 @@ import os
 import pprint
 
 # Create your views here.
-def fossils(request):
-    fossil_list = []
+def scarabs(request):
+    scarab_list = []
 
     path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    file = path + '/Fossil.csv'
+    file = path + '/Scarab.csv'
     file = os.path.normpath(file)
     print(file)
     if not os.path.exists(file):
@@ -18,7 +18,7 @@ def fossils(request):
     with open(file, "r") as f:
         reader = csv.DictReader(f)
         for line in reader:
-            fossil_list.append(line)
+            scarab_list.append(line)
             print(line)
-    context = { 'fossil_list': fossil_list }
-    return render(request, 'fossils/fossils.html', context)
+    context = { 'scarab_list': scarab_list }
+    return render(request, 'scarabs/scarabs.html', context)

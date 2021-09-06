@@ -31,21 +31,21 @@
 
 <table class="consumable-table">
     <tr>
-        <th>Fossil</th>
+        <th>Scarab</th>
         <th>Avg Price</th>
         <th>Bulk Quant</th>
         <th>Profit</th>
         <th>Profit Per</th>
         <th>Supply</th>
     </tr>
-    {% for fossil in fossil_list %}
+    {% for scarab in scarab_list %}
         <tr>
-            <td><img src="{{ fossil.icon_url }}"> {{ fossil.name }}</td>
-            <td>{{fossil.avgPrice }}</td>
-            <td>{{fossil.bulkQuant }}</td>
-            <td>{{fossil.profit }}</td>
-            <td>{{fossil.profitPer }}</td>
-            <td>{{fossil.supply }}</td>
+            <td><img src="{{ scarab.icon_url }}"> {{ scarab.name }}</td>
+            <td>{{scarab.avgPrice }}</td>
+            <td>{{scarab.bulkQuant }}</td>
+            <td>{{scarab.profit }}</td>
+            <td>{{scarab.profitPer }}</td>
+            <td>{{scarab.supply }}</td>
         </tr>
     {% endfor %}
 </table>

@@ -1,5 +1,6 @@
 import requests
 import time
+import pprint
 
 
 class consumable:
@@ -11,7 +12,7 @@ class consumable:
         self.supply = 0
         self.bulkQuant = 0
         self.profit = 0
-        self.profitPerFossil = 0
+        self.profitPer = 0
 
 
 BASE_SEARCH = 'http://www.pathofexile.com/api/trade/exchange/'
@@ -45,6 +46,7 @@ def getBulkQuant(itemName):
     invalid_response_code = True
     while invalid_response_code:
         r = requests.post(urlSearch1, json=payload, headers=HEADERS)
+        #pprint.pprint(r.headers)
         if r.status_code != 406:
             invalid_response_code = False
         else:
