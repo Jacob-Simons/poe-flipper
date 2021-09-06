@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-vjmk2(1(lfiej*g6x9#5d1o0@!6!3g62o0x_fl3&54@g!i3r1&
 DEBUG = False
 
 ALLOWED_HOSTS = ['www.poeflip.com', 'poeflip.com', '165.232.154.174', 'localhost', '127.0.0.1',]
-
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 
