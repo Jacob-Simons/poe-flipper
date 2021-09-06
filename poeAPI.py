@@ -52,7 +52,7 @@ def getBulkQuant(itemName):
         else:
             time.sleep(300)
 
-    time.sleep(5)
+    time.sleep(6)
     urlID = r.json()['id']
     if len(r.json()['result']) == 0:
         return 0
