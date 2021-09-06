@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-vjmk2(1(lfiej*g6x9#5d1o0@!6!3g62o0x_fl3&54@g!i3r1&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['165.232.154.174', 'poeflip.com', 'www.poeflip.com']
+ALLOWED_HOSTS = ['165.232.154.174', 'poeflip.com']
 
 
 # Application definition
