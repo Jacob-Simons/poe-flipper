@@ -12,6 +12,7 @@ icons/
 
 #Data
 *.csv
+constants.py
 
 # Distribution / packaging
 .Python
