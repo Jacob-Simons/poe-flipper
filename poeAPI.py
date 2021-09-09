@@ -48,9 +48,9 @@ def getBulkQuant(itemName):
         try:
             r = requests.post(urlSearch1, json=payload, headers=HEADERS)
             invalid_response_code = False
-        except ConnectionResetError or ConnectionError:
-            print('error')
-            time.sleep(300)
+        except requests.exceptions.RequestException as e:  # This is the correct syntax
+            print(e)
+            time.sleep(60)
 
     time.sleep(5)
     urlID = r.json()['id']
@@ -63,9 +63,9 @@ def getBulkQuant(itemName):
         try:
             r = requests.get(urlSearch2, headers=HEADERS)
             invalid_response_code = False
-        except ConnectionResetError or ConnectionError:
-            print('error')
-            time.sleep(300)
+        except requests.exceptions.RequestException as e:  # This is the correct syntax
+            print(e)
+            time.sleep(60)
 
     pprint.pprint(r.headers)
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
