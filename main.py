@@ -6,7 +6,6 @@ import csv
 from tempfile import NamedTemporaryFile
 import shutil
 
-
 #  div card overview
 # r = requests.get('https://poe.ninja/api/data/itemoverview?league=Heist&type=
 
@@ -32,10 +31,8 @@ def update_consumables():
     while True:
         for consumable,poe_watch_target in zip(CONSUMABLE_LIST, POE_WATCH_LIST):
             avg_price_list = ninjaAPI.getOverview(consumable)
-            print(avg_price_list)
             if consumable == "Scarab":
                 for scarab in avg_price_list:
-                    print(scarab)
                     if scarab.id.find('lure') != -1:
                         avg_price_list.remove(scarab)
 

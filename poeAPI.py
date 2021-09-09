@@ -1,6 +1,7 @@
 import requests
 import time
 import pprint
+import constants
 
 
 class consumable:
@@ -19,7 +20,7 @@ BASE_SEARCH = 'http://www.pathofexile.com/api/trade/exchange/'
 BASE_FETCH = 'https://www.pathofexile.com/api/trade/fetch/'
 QUERY = '?exchange=true&query='
 
-HEADERS = {"User-Agent": "Bulk Flipper/1.0 (+poponoodles@gmail.com)"}
+HEADERS = {"User-Agent": constants.POE_API_HEADER}
 
 # grabbing current league
 r = requests.get('https://www.pathofexile.com/api/trade/data/leagues', headers=HEADERS)
@@ -42,23 +43,31 @@ def getBulkQuant(itemName):
 
     payload["exchange"]["want"][0] = itemName
 
-    HEADERS = {"User-Agent": "OAuth Bulk Flipper/1.0 (+poponoodles@gmail.com)"}
     invalid_response_code = True
     while invalid_response_code:
-        r = requests.post(urlSearch1, json=payload, headers=HEADERS)
-        #pprint.pprint(r.headers)
-        if r.status_code != 406:
+        try:
+            r = requests.post(urlSearch1, json=payload, headers=HEADERS)
             invalid_response_code = False
-        else:
+        except ConnectionResetError or ConnectionError:
+            print('error')
             time.sleep(300)
 
-    time.sleep(6)
+    time.sleep(5)
     urlID = r.json()['id']
     if len(r.json()['result']) == 0:
         return 0
     resultLine = r.json()['result'][0]
     urlSearch2 = BASE_FETCH + resultLine + QUERY + urlID
-    r = requests.get(urlSearch2, headers=HEADERS)
+    invalid_response_code = True
+    while invalid_response_code:
+        try:
+            r = requests.get(urlSearch2, headers=HEADERS)
+            invalid_response_code = False
+        except ConnectionResetError or ConnectionError:
+            print('error')
+            time.sleep(300)
+
+    pprint.pprint(r.headers)
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
     quant = r.json()['result'][0]['listing']['price']['item']['amount']
     bulkQuant = quant / exa
