@@ -48,9 +48,25 @@ def getBulkQuant(itemName):
         try:
             r = requests.post(urlSearch1, json=payload, headers=HEADERS)
             invalid_response_code = False
-        except requests.exceptions.RequestException as e:  # This is the correct syntax
+
+            if r.status_code == 200:
+                invalid_response_code = False
+            else:
+                print(r.headers['X-Rate-Limit-Ip-State'])
+                state1 = r.headers['X-Rate-Limit-Ip-State']
+                state1 = state1[state1.find(':') + 1:]
+                state1 = state1[state1.find(':') + 1:state1.find(',')]
+                state2 = r.headers['X-Rate-Limit-Ip-State']
+                state2 = state2[state2.find(',') + 1:]
+                state2 = state2[state2.find(':') + 1:]
+                state2 = state2[state2.find(':') + 1:]
+                if int(state1) > int(state2):
+                    time.sleep(int(state1) + 5)
+                else:
+                    time.sleep(int(state2) + 5)
+        except requests.exceptions.RequestException as e:
             print(e)
-            time.sleep(60)
+            time.sleep(10)
 
     time.sleep(5)
     urlID = r.json()['id']
@@ -62,12 +78,26 @@ def getBulkQuant(itemName):
     while invalid_response_code:
         try:
             r = requests.get(urlSearch2, headers=HEADERS)
-            invalid_response_code = False
+            if r.status_code == 200:
+                invalid_response_code = False
+            else:
+                print(r.headers['X-Rate-Limit-Ip-State'])
+                state1 = r.headers['X-Rate-Limit-Ip-State']
+                state1 = state1[state1.find(':') + 1:]
+                state1 = state1[state1.find(':') + 1:state1.find(',')]
+                state2 = r.headers['X-Rate-Limit-Ip-State']
+                state2 = state2[state2.find(',') + 1:]
+                state2 = state2[state2.find(':') + 1:]
+                state2 = state2[state2.find(':') + 1:]
+                if int(state1) > int(state2):
+                    time.sleep(int(state1) + 5)
+                else:
+                    time.sleep(int(state2) + 5)
+
         except requests.exceptions.RequestException as e:  # This is the correct syntax
             print(e)
-            time.sleep(60)
+            time.sleep(10)
 
-    pprint.pprint(r.headers)
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
     quant = r.json()['result'][0]['listing']['price']['item']['amount']
     bulkQuant = quant / exa

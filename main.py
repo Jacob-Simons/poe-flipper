@@ -64,3 +64,4 @@ def update_consumables():
             shutil.move(temp_log.name, consumable + '.csv')
 
 update_consumables()
+
