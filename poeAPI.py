@@ -98,6 +98,9 @@ def getBulkQuant(itemName):
             print(e)
             time.sleep(10)
 
+    if r.json() is None:
+        return 0
+
     exa = r.json()['result'][0]['listing']['price']['exchange']['amount']
     quant = r.json()['result'][0]['listing']['price']['item']['amount']
     bulkQuant = quant / exa
