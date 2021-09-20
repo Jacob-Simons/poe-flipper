@@ -6,10 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-#Icons
-*.png
-icons/
-
 #Data
 *.csv
 constants.py

@@ -12,11 +12,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import constants
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print(BASE_DIR.parent)
+sys.path.append(str(BASE_DIR.parent))
+import constants
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,9 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = constants.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['www.poeflip.com', 'poeflip.com', '165.232.154.174', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['www.poeflip.com', 'poeflip.com', '165.232.154.174', 'localhost', '127.0.0.1']
 USE_X_FORWARDED_HOST = True
 
 # Application definition
@@ -78,13 +83,6 @@ WSGI_APPLICATION = 'djangoserver.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
