@@ -67,7 +67,7 @@ def get_bulk_quant(item_name):
     response = process_get(url_search2)
 
     time.sleep(DEFAULT_DELAY)
-    if response.json()['result'][0]['listing']['price']['exchange']['amount'] is None:
+    if response.json() is None:
         return 0
 
     exa = response.json()['result'][0]['listing']['price']['exchange']['amount']
@@ -94,8 +94,7 @@ def process_get(target_url):
             response = requests.get(target_url, headers=HEADERS)
             if response.status_code == 200:
                 invalid_response_code = False
-            else:
-                print(response.headers['X-Rate-Limit-Ip-State'])
+            elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
                 state1 = state1[state1.find(':') + 1:]
                 state1 = state1[state1.find(':') + 1:state1.find(',')]
@@ -132,8 +131,7 @@ def process_post(target_url, payload):
             response = requests.post(target_url, json=payload, headers=HEADERS)
             if response.status_code == 200:
                 invalid_response_code = False
-            else:
-                print(response.headers['X-Rate-Limit-Ip-State'])
+            elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
                 state1 = state1[state1.find(':') + 1:]
                 state1 = state1[state1.find(':') + 1:state1.find(',')]
@@ -145,6 +143,8 @@ def process_post(target_url, payload):
                     time.sleep(int(state1) + DEFAULT_DELAY)
                 else:
                     time.sleep(int(state2) + DEFAULT_DELAY)
+            else:
+                time.sleep(DEFAULT_DELAY)
 
         except requests.exceptions.RequestException as e:
             print(e)
