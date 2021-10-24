@@ -92,10 +92,12 @@ def process_get(target_url):
     while invalid_response_code:
         try:
             response = requests.get(target_url, headers=HEADERS)
-            wait = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
+            print(response.status_code)
+            wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
+            print(wait_time)
             if response.status_code == 200:
                 invalid_response_code = False
-                time.sleep(wait)
+                time.sleep(wait_time)
             elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
                 state1 = state1[state1.find(':') + 1:]
@@ -131,8 +133,11 @@ def process_post(target_url, payload):
     while invalid_response_code:
         try:
             response = requests.post(target_url, json=payload, headers=HEADERS)
+            print(response.status_code)
 
             wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
+            print(wait_time)
+
             if response.status_code == 200:
                 invalid_response_code = False
                 time.sleep(wait_time)
@@ -150,8 +155,6 @@ def process_post(target_url, payload):
                     time.sleep(int(state2) + 1)
             else:
                 time.sleep(DEFAULT_DELAY)
-
-
 
         except requests.exceptions.RequestException as e:
             print(e)

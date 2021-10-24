@@ -65,7 +65,7 @@ def update_consumables():
                 log_writer.writerow(['name', 'id', 'avgPrice', 'bulkQuant', 'profit', 'profitPer', 'supply', 'icon_url'])
 
                 for item in avg_price_list:
-                    if consumable == 'Scarab' and item.item_id.find('blight') == -1 and item.item_id.find('abyss') == -1:
+                    if consumable == 'Scarab' and item.item_id.find('blight') == -1 and item.item_id.find('abyss') == -1 and item.item_id.find('expedition') == -1:
                         item.item_id = item.item_id.replace('winged', 'jewelled')
                     print(item.item_id)
                     item.bulk_quant = poeAPI.get_bulk_quant(item.item_id)
