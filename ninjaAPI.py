@@ -3,6 +3,8 @@ ninjaAPI is the driver which handles all poe.ninja API requests.
 """
 import requests
 import poeAPI
+import pprint
+import time
 
 
 def get_overview(target):
@@ -26,13 +28,26 @@ def get_overview(target):
     return avg_price_list
 
 
+def get_div_card():
+    r = requests.get('https://poe.ninja/api/data/itemoverview?league=' + poeAPI.currLeague + '&type=DivinationCard')
+    pprint.pprint(r.json())
+
+
 def get_exa_price():
     """
     Sends a get request to poe.ninja API for the currency overview to get the current exa price in chaos
 
     :return: returns an int representing the current exa price in chaos
     """
-    r = requests.get('https://poe.ninja/api/data/currencyoverview?league=' + poeAPI.currLeague + '&type=Currency')
+
+    error_response = True
+    while error_response:
+        r = requests.get('https://poe.ninja/api/data/currencyoverview?league=' + poeAPI.currLeague + '&type=Currency')
+        if r.status_code == 200:
+            error_response = False
+        else:
+            time.sleep(5)
+
     exa_price = 0
     for currency in r.json()['lines']:
         if currency['detailsId'] == 'exalted-orb':
