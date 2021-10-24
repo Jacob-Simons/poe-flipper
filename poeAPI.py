@@ -35,7 +35,7 @@ currLeague = r.json()['result'][0]['id']
 
 # first url to post item data to
 url_search1 = BASE_SEARCH + currLeague
-DEFAULT_DELAY = 5
+DEFAULT_DELAY = 10
 
 
 def get_bulk_quant(item_name):
@@ -92,8 +92,10 @@ def process_get(target_url):
     while invalid_response_code:
         try:
             response = requests.get(target_url, headers=HEADERS)
+            wait = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
             if response.status_code == 200:
                 invalid_response_code = False
+                time.sleep(wait)
             elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
                 state1 = state1[state1.find(':') + 1:]
@@ -103,9 +105,9 @@ def process_get(target_url):
                 state2 = state2[state2.find(':') + 1:]
                 state2 = state2[state2.find(':') + 1:]
                 if int(state1) > int(state2):
-                    time.sleep(int(state1) + DEFAULT_DELAY)
+                    time.sleep(int(state1) + 1)
                 else:
-                    time.sleep(int(state2) + DEFAULT_DELAY)
+                    time.sleep(int(state2) + 1)
 
         except requests.exceptions.RequestException as e:
             print(e)
@@ -129,8 +131,11 @@ def process_post(target_url, payload):
     while invalid_response_code:
         try:
             response = requests.post(target_url, json=payload, headers=HEADERS)
+
+            wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
             if response.status_code == 200:
                 invalid_response_code = False
+                time.sleep(wait_time)
             elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
                 state1 = state1[state1.find(':') + 1:]
@@ -140,11 +145,13 @@ def process_post(target_url, payload):
                 state2 = state2[state2.find(':') + 1:]
                 state2 = state2[state2.find(':') + 1:]
                 if int(state1) > int(state2):
-                    time.sleep(int(state1) + DEFAULT_DELAY)
+                    time.sleep(int(state1) + 1)
                 else:
-                    time.sleep(int(state2) + DEFAULT_DELAY)
+                    time.sleep(int(state2) + 1)
             else:
                 time.sleep(DEFAULT_DELAY)
+
+
 
         except requests.exceptions.RequestException as e:
             print(e)
@@ -164,3 +171,16 @@ def normalize(num):
     if num.is_integer():
         num = int(num)
     return num
+
+def parse_rate_limit(rate):
+    max_wait = 0
+    rate += ',.'
+    while rate.find(",") != -1:
+        first_colon = rate.find(":")
+        second_colon = rate.find(":", first_colon + 1)
+        max_requests = int(rate[0:first_colon])
+        time_interval = int(rate[first_colon + 1:second_colon])
+        wait = time_interval / max_requests
+        max_wait = max(max_wait, wait)
+        rate = rate[rate.find(",") + 1:]
+    return max_wait + 1
