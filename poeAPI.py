@@ -68,7 +68,11 @@ def get_bulk_quant(item_name):
     if response.json() is None:
         return 0
 
+
     exa = response.json()['result'][0]['listing']['price']['exchange']['amount']
+    if exa == 0:
+        return 0
+    
     quant = response.json()['result'][0]['listing']['price']['item']['amount']
     bulk_quant = quant / exa
     return normalize(bulk_quant)
