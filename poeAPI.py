@@ -58,7 +58,6 @@ def get_bulk_quant(item_name):
 
     response = process_post(url_search1, payload)
 
-    time.sleep(DEFAULT_DELAY)
     url_id = response.json()['id']
     if len(response.json()['result']) == 0:
         return 0
@@ -66,7 +65,6 @@ def get_bulk_quant(item_name):
     url_search2 = BASE_FETCH + result_line + QUERY + url_id
     response = process_get(url_search2)
 
-    time.sleep(DEFAULT_DELAY)
     if response.json() is None:
         return 0
 
@@ -92,11 +90,9 @@ def process_get(target_url):
     while invalid_response_code:
         try:
             response = requests.get(target_url, headers=HEADERS)
-            print(response.status_code)
-            wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
-            print(wait_time)
             if response.status_code == 200:
                 invalid_response_code = False
+                wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
                 time.sleep(wait_time)
             elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
@@ -110,6 +106,8 @@ def process_get(target_url):
                     time.sleep(int(state1) + 1)
                 else:
                     time.sleep(int(state2) + 1)
+            else:
+                time.sleep(DEFAULT_DELAY)
 
         except requests.exceptions.RequestException as e:
             print(e)
@@ -133,13 +131,10 @@ def process_post(target_url, payload):
     while invalid_response_code:
         try:
             response = requests.post(target_url, json=payload, headers=HEADERS)
-            print(response.status_code)
-
-            wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
-            print(wait_time)
 
             if response.status_code == 200:
                 invalid_response_code = False
+                wait_time = parse_rate_limit(response.headers['X-Rate-Limit-Ip'])
                 time.sleep(wait_time)
             elif response.status_code == 429:
                 state1 = response.headers['X-Rate-Limit-Ip-State']
