@@ -64,13 +64,13 @@ def get_bulk_quant(item_name):
     result_line = response.json()['result'][0]
     url_search2 = BASE_FETCH + result_line + QUERY + url_id
     response = process_get(url_search2)
-
-    if response.json().get('result'):
-        exa = response.json()['result'][0]['listing']['price']['exchange']['amount']
+    responses = response.json()
+    if responses:
+        exa = responses['result'][0]['listing']['price']['exchange']['amount']
         if exa == 0:
             return 0
 
-        quant = response.json()['result'][0]['listing']['price']['item']['amount']
+        quant = responses['result'][0]['listing']['price']['item']['amount']
         bulk_quant = quant / exa
         return normalize(bulk_quant)
     return 0
